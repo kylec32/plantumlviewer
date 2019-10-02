@@ -39,3 +39,23 @@ function debounce(func, wait, immediate) {
       if (callNow) func.apply(context, args);
     };
   };
+
+markupElement.onkeydown = (e) => {
+  const tabSize = '    ';
+
+  // Check if tab key was pressed
+  if (e.keyCode === 9) {
+    e.preventDefault();
+
+    const caretPosition = markupElement.selectionStart;
+    const newCaretPosition = caretPosition + tabSize.length;
+
+    const preText = markupElement.value.substring(0, caretPosition);
+    const postText = markupElement.value.substring(caretPosition, markupElement.value.length);
+
+    // Insert the tab and update caret position
+    markupElement.value = preText + tabSize + postText;
+    markupElement.selectionStart = newCaretPosition;
+    markupElement.selectionEnd = newCaretPosition;
+  }
+};
