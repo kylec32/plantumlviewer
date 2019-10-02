@@ -53,3 +53,17 @@ function compress(s) {
   s = unescape(encodeURIComponent(s));
   return encode64(zip_deflate(s, 9));
 }
+
+function downloadImage(e) {
+	html2canvas(document.getElementById('diagram'), {
+		useCORS: true,
+	}).then(function(canvas) {
+		var link = document.createElement('a');
+		link.download = 'diagram.png';
+		link.href = canvas.toDataURL('image/png');
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		delete link;
+  	});
+}
