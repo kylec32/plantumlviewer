@@ -5,8 +5,9 @@ function markupChanged() {
     fetch("https://www.plantuml.com/plantuml/svg/" + compressedData)
         .then(value => value.text()
         .then(text => {
+            localStorage.setItem('tempDiagram', JSON.stringify(text));
             let svgBox = document.getElementById("diagram");
-            svgBox.innerHTML = text;
+            svgBox.innerHTML = JSON.parse(localStorage.getItem('tempDiagram'));
             }
         ));
 }
