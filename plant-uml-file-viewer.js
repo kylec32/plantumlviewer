@@ -1,20 +1,23 @@
 function markupChanged() {
     let markupElement = document.getElementById("markup");
-
+    let svgBox = document.getElementById("diagram");
     let compressedData = compress(markupElement.value);
-    fetch("https://www.plantuml.com/plantuml/svg/" + compressedData)
+    
+    if (localStorage.getItem('tempDiagram')) {
+        svgBox.innerHTML = JSON.parse(localStorage.getItem('tempDiagram'));
+    } else {
+        fetch("https://www.plantuml.com/plantuml/svg/" + compressedData)
         .then(value => value.text()
         .then(text => {
             localStorage.setItem('tempDiagram', JSON.stringify(text));
-            let svgBox = document.getElementById("diagram");
-            svgBox.innerHTML = JSON.parse(localStorage.getItem('tempDiagram'));
-            }
-        ));
+            svgBox.innerHTML = text;
+        }));
+    }
 }
 
 var returnedFunction = debounce(function() {
     markupChanged()
-  }, 300);
+}, 300);
 
 let markupElement = document.getElementById("markup");
 markupElement.addEventListener('keyup', returnedFunction);
@@ -39,4 +42,4 @@ function debounce(func, wait, immediate) {
 
       if (callNow) func.apply(context, args);
     };
-  };
+};
